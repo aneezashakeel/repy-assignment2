@@ -1,1 +1,11 @@
 
+
+myfile = ABopenfile("testfile3.txt", True)
+myfile.writeat("S", 0)
+myfile.writeat(" DATAE", 1)  
+myfile.close()
+
+
+myfile = ABopenfile("testfile3.txt", False)
+data = myfile.readat(None, 0)
+myfile.close()
