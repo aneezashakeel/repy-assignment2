@@ -1,13 +1,13 @@
-# Attack: Write data that doesn't end with 'E'
-# Should not save to A file
-
-if "testfile13.txt" in listfiles():
-  removefile("testfile13.txt")
-if "testfile13.txt.a" in listfiles():
-  removefile("testfile13.txt.a")
-if "testfile13.txt.b" in listfiles():
-  removefile("testfile13.txt.b")
-
-myfile = ABopenfile("testfile13.txt", True)
-myfile.writeat("SAFEDATA", 0)
-myfile.close()
+# Test: File not ending with E
+try:
+  myfile = ABopenfile("testfile13.txt", True)
+  myfile.writeat("SAFEDATA", 0)
+  myfile.close()
+  
+  myfile = ABopenfile("testfile13.txt", False)
+  data = myfile.readat(None, 0)
+  if data == "SAFEDATA":
+    log("BUG: File ending with non-E was saved!")
+  myfile.close()
+except:
+  pass
