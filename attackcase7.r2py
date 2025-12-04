@@ -1,1 +1,11 @@
+# Attack Case 7: Write only starting character 'S' without ending 'E'
+# Strategy: File starts with 'S' but doesn't end with 'E'
 
+myfile = ABopenfile("testfile7.txt", True)
+myfile.writeat("S", 0)  # Only 'S', no 'E' at the end
+myfile.close()
+
+# Check if invalid file is promoted to A
+myfile = ABopenfile("testfile7.txt", False)
+data = myfile.readat(None, 0)
+myfile.close()
