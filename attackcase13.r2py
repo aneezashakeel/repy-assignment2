@@ -1,13 +1,19 @@
-# Test: File not ending with E
+# Attack: Neither S nor E
+if "testfile13.txt.a" in listfiles():
+  removefile("testfile13.txt.a")
+if "testfile13.txt.b" in listfiles():
+  removefile("testfile13.txt.b")
+
+myfile = ABopenfile("testfile13.txt", True)
+
 try:
-  myfile = ABopenfile("testfile13.txt", True)
-  myfile.writeat("SAFEDATA", 0)
+  myfile.writeat("INVALID", 0)
   myfile.close()
   
   myfile = ABopenfile("testfile13.txt", False)
   data = myfile.readat(None, 0)
-  if data == "SAFEDATA":
-    log("BUG: File ending with non-E was saved!")
+  if "INVALID" in data:
+    log("Data without S or E was saved!")
   myfile.close()
 except:
   pass
