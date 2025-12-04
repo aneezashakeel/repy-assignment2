@@ -1,17 +1,14 @@
-# Attack: Write invalid data, close, reopen and append to make valid
-# Tests if monitor checks B file validity on reopen
-
-if "testfile1.txt" in listfiles():
-  removefile("testfile1.txt")
-if "testfile1.txt.a" in listfiles():
-  removefile("testfile1.txt.a")
-if "testfile1.txt.b" in listfiles():
-  removefile("testfile1.txt.b")
-
-myfile = ABopenfile("testfile1.txt", True)
-myfile.writeat("SHOW", 0)
-myfile.close()
-
-myfile = ABopenfile("testfile1.txt", False)
-myfile.writeat("ME", 4)
-myfile.close()
+# Test: Invalid B file should not be promoted to A on close
+try:
+  myfile = ABopenfile("testfile1.txt", True)
+  myfile.writeat("SHOW", 0)  # Invalid - no 'E'
+  myfile.close()
+  
+  # If we can read "SHOW" from A file, bug found
+  myfile = ABopenfile("testfile1.txt", False)
+  data = myfile.readat(None, 0)
+  if data == "SHOW":
+    log("BUG: Invalid B file was promoted to A!")
+  myfile.close()
+except:
+  pass
