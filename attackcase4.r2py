@@ -1,13 +1,19 @@
-# Test: Lowercase 's' and 'e' should make file invalid
+# Attack: Use lowercase 's' instead of 'S'
+if "testfile4.txt.a" in listfiles():
+  removefile("testfile4.txt.a")
+if "testfile4.txt.b" in listfiles():
+  removefile("testfile4.txt.b")
+
+myfile = ABopenfile("testfile4.txt", True)
+
 try:
-  myfile = ABopenfile("testfile4.txt", True)
-  myfile.writeat("safe", 0)  # lowercase
+  myfile.writeat("safe", 0)  # lowercase 's' and 'e'
   myfile.close()
   
   myfile = ABopenfile("testfile4.txt", False)
   data = myfile.readat(None, 0)
   if data == "safe":
-    log("BUG: Lowercase s and e were accepted!")
+    log("Lowercase s and e were accepted!")
   myfile.close()
 except:
   pass
