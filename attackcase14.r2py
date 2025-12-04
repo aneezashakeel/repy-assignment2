@@ -1,8 +1,17 @@
+# Attack: Write valid then corrupt middle
+# Still has S and E but corrupted
 
-# Attack Case 14: Try to read before any valid write
-# Strategy: Open file, try to read without writing valid data first
+if "testfile14.txt" in listfiles():
+  removefile("testfile14.txt")
+if "testfile14.txt.a" in listfiles():
+  removefile("testfile14.txt.a")
+if "testfile14.txt.b" in listfiles():
+  removefile("testfile14.txt.b")
 
 myfile = ABopenfile("testfile14.txt", True)
-data = myfile.readat(10, 0)  # Try to read before writing anything
-myfile.writeat("INVALID", 0)  # Then write invalid data
+myfile.writeat("SECURE", 0)
+myfile.close()
+
+myfile = ABopenfile("testfile14.txt", False)
+myfile.writeat("XX", 2)
 myfile.close()
