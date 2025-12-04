@@ -1,17 +1,20 @@
-# Test: Overwrite middle preserving S and E
+# Attack: Write beyond normal size
+if "testfile14.txt.a" in listfiles():
+  removefile("testfile14.txt.a")
+if "testfile14.txt.b" in listfiles():
+  removefile("testfile14.txt.b")
+
+myfile = ABopenfile("testfile14.txt", True)
+
 try:
-  myfile = ABopenfile("testfile14.txt", True)
-  myfile.writeat("SECURE", 0)
-  myfile.close()
-  
-  myfile = ABopenfile("testfile14.txt", False)
-  myfile.writeat("XX", 2)  # Middle corruption
+  myfile.writeat("S", 0)
+  myfile.writeat("E", 10000)  # Large offset
   myfile.close()
   
   myfile = ABopenfile("testfile14.txt", False)
   data = myfile.readat(None, 0)
-  if "XX" in data:
-    log("BUG: Middle corruption still has S and E!")
+  if len(data) > 100:
+    log("Large gap between S and E was allowed!")
   myfile.close()
 except:
   pass
