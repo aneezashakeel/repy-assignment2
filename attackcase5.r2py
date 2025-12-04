@@ -1,1 +1,17 @@
 
+# Attack Case 5: Create valid file, then overwrite to make invalid
+# Strategy: Start with valid data, then overwrite critical characters
+
+myfile = ABopenfile("testfile5.txt", True)
+myfile.writeat("SAFE", 0)  # Valid: starts with 'S', ends with 'E'
+myfile.close()
+
+# Reopen and corrupt it
+myfile = ABopenfile("testfile5.txt", False)
+myfile.writeat("X", 0)  # Overwrite 'S' with 'X' - now "XAFE"
+myfile.close()
+
+# The file should be invalid now, check if monitor allows this
+myfile = ABopenfile("testfile5.txt", False)
+data = myfile.readat(None, 0)
+myfile.close()
