@@ -1,17 +1,23 @@
-# Test: Overwriting ending 'E' should invalidate
+# Attack: Overwrite ending E
+if "testfile10.txt.a" in listfiles():
+  removefile("testfile10.txt.a")
+if "testfile10.txt.b" in listfiles():
+  removefile("testfile10.txt.b")
+
+myfile = ABopenfile("testfile10.txt", True)
+
 try:
-  myfile = ABopenfile("testfile10.txt", True)
   myfile.writeat("SAFE", 0)
   myfile.close()
   
   myfile = ABopenfile("testfile10.txt", False)
-  myfile.writeat("R", 3)  # Makes it "SAFR"
+  myfile.writeat("X", 3)  # Overwrite E
   myfile.close()
   
   myfile = ABopenfile("testfile10.txt", False)
   data = myfile.readat(None, 0)
-  if data[-1] != 'E':
-    log("BUG: File without ending E was saved!")
+  if data[-1] != "E":
+    log("Overwrote E with invalid character!")
   myfile.close()
 except:
   pass
