@@ -1,13 +1,13 @@
-# Attack: Use lowercase 's' and 'e'
-# Should be invalid per Requirement 2
-
-if "testfile4.txt" in listfiles():
-  removefile("testfile4.txt")
-if "testfile4.txt.a" in listfiles():
-  removefile("testfile4.txt.a")
-if "testfile4.txt.b" in listfiles():
-  removefile("testfile4.txt.b")
-
-myfile = ABopenfile("testfile4.txt", True)
-myfile.writeat("safe", 0)
-myfile.close()
+# Test: Lowercase 's' and 'e' should make file invalid
+try:
+  myfile = ABopenfile("testfile4.txt", True)
+  myfile.writeat("safe", 0)  # lowercase
+  myfile.close()
+  
+  myfile = ABopenfile("testfile4.txt", False)
+  data = myfile.readat(None, 0)
+  if data == "safe":
+    log("BUG: Lowercase s and e were accepted!")
+  myfile.close()
+except:
+  pass
