@@ -1,18 +1,17 @@
+# Attack: Write invalid data, close, reopen and append to make valid
+# Tests if monitor checks B file validity on reopen
 
+if "testfile1.txt" in listfiles():
+  removefile("testfile1.txt")
+if "testfile1.txt.a" in listfiles():
+  removefile("testfile1.txt.a")
+if "testfile1.txt.b" in listfiles():
+  removefile("testfile1.txt.b")
 
-
-
-myfile = ABopenfile("testfile.txt", True)
-myfile.writeat("SHOW", 0)  
+myfile = ABopenfile("testfile1.txt", True)
+myfile.writeat("SHOW", 0)
 myfile.close()
 
-
-myfile = ABopenfile("testfile.txt", False)
-myfile.writeat("ME", 4)  
+myfile = ABopenfile("testfile1.txt", False)
+myfile.writeat("ME", 4)
 myfile.close()
-
-
-myfile = ABopenfile("testfile.txt", False)
-data = myfile.readat(None, 0)
-myfile.close()
-
