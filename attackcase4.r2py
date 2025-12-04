@@ -1,1 +1,10 @@
 
+
+myfile = ABopenfile("testfile4.txt", True)
+myfile.writeat("showmee", 0)  
+myfile.close()
+
+
+myfile = ABopenfile("testfile4.txt", False)
+data = myfile.readat(None, 0)
+myfile.close()
