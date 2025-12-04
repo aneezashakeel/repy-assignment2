@@ -1,14 +1,14 @@
-# Attack: Invalid write, then valid append
-# Tests validation timing
-
-if "testfile15.txt" in listfiles():
-  removefile("testfile15.txt")
-if "testfile15.txt.a" in listfiles():
-  removefile("testfile15.txt.a")
-if "testfile15.txt.b" in listfiles():
-  removefile("testfile15.txt.b")
-
-myfile = ABopenfile("testfile15.txt", True)
-myfile.writeat("DATAX", 0)
-myfile.writeat("E", 5)
-myfile.close()
+# Test: Write invalid then append E
+try:
+  myfile = ABopenfile("testfile15.txt", True)
+  myfile.writeat("DATAX", 0)
+  myfile.writeat("E", 5)  # Now "DATAXE" but didn't start with S
+  myfile.close()
+  
+  myfile = ABopenfile("testfile15.txt", False)
+  data = myfile.readat(None, 0)
+  if data == "DATAXE":
+    log("BUG: Non-S start with E end was saved!")
+  myfile.close()
+except:
+  pass
