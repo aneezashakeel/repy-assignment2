@@ -1,14 +1,23 @@
-# Test: Write invalid then append E
+# Attack: Append after invalid close
+if "testfile15.txt.a" in listfiles():
+  removefile("testfile15.txt.a")
+if "testfile15.txt.b" in listfiles():
+  removefile("testfile15.txt.b")
+
+myfile = ABopenfile("testfile15.txt", True)
+
 try:
-  myfile = ABopenfile("testfile15.txt", True)
-  myfile.writeat("DATAX", 0)
-  myfile.writeat("E", 5)  # Now "DATAXE" but didn't start with S
+  myfile.writeat("DATA", 0)  # Invalid
+  myfile.close()
+  
+  myfile = ABopenfile("testfile15.txt", False)
+  myfile.writeat("SE", 0)  # Try to fix it
   myfile.close()
   
   myfile = ABopenfile("testfile15.txt", False)
   data = myfile.readat(None, 0)
-  if data == "DATAXE":
-    log("BUG: Non-S start with E end was saved!")
+  if data == "SE":
+    log("Fixed invalid file after close!")
   myfile.close()
 except:
   pass
