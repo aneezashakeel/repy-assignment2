@@ -1,1 +1,7 @@
+# Attack Case 9: Multiple close operations on same file handle
+# Strategy: Call close() multiple times to test race conditions
 
+myfile = ABopenfile("testfile9.txt", True)
+myfile.writeat("SECURE", 0)  # Valid data
+myfile.close()
+myfile.close()  # Close again - might cause issues
