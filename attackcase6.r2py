@@ -1,1 +1,11 @@
+# Attack Case 6: Create file but write nothing
+# Strategy: Open with create=True but never write valid data
 
+myfile = ABopenfile("testfile6.txt", True)
+# Don't write anything, just close
+myfile.close()
+
+# Try to access the empty file
+myfile = ABopenfile("testfile6.txt", False)
+data = myfile.readat(None, 0)
+myfile.close()
