@@ -1,14 +1,20 @@
-# Test: Multiple writes ending invalid should not save
+# Attack: Multiple writes ending invalid
+if "testfile11.txt.a" in listfiles():
+  removefile("testfile11.txt.a")
+if "testfile11.txt.b" in listfiles():
+  removefile("testfile11.txt.b")
+
+myfile = ABopenfile("testfile11.txt", True)
+
 try:
-  myfile = ABopenfile("testfile11.txt", True)
   myfile.writeat("SAFE", 0)
-  myfile.writeat("R", 4)  # Makes it invalid
+  myfile.writeat("R", 4)  # Makes "SAFER" - no E at end
   myfile.close()
   
   myfile = ABopenfile("testfile11.txt", False)
   data = myfile.readat(None, 0)
   if "SAFER" in data:
-    log("BUG: Invalid multi-write was saved!")
+    log("Multiple writes created invalid file!")
   myfile.close()
 except:
   pass
