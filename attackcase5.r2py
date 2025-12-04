@@ -1,17 +1,17 @@
-# Attack: Create valid, then overwrite first char
-# Should invalidate the file
-
-if "testfile5.txt" in listfiles():
-  removefile("testfile5.txt")
-if "testfile5.txt.a" in listfiles():
-  removefile("testfile5.txt.a")
-if "testfile5.txt.b" in listfiles():
-  removefile("testfile5.txt.b")
-
-myfile = ABopenfile("testfile5.txt", True)
-myfile.writeat("SAFE", 0)
-myfile.close()
-
-myfile = ABopenfile("testfile5.txt", False)
-myfile.writeat("X", 0)
-myfile.close()
+# Test: Overwriting 'S' should invalidate file
+try:
+  myfile = ABopenfile("testfile5.txt", True)
+  myfile.writeat("SAFE", 0)
+  myfile.close()
+  
+  myfile = ABopenfile("testfile5.txt", False)
+  myfile.writeat("X", 0)  # Overwrite 'S'
+  myfile.close()
+  
+  myfile = ABopenfile("testfile5.txt", False)
+  data = myfile.readat(None, 0)
+  if data[0] != 'S':
+    log("BUG: File with corrupted S was saved!")
+  myfile.close()
+except:
+  pass
