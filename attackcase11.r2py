@@ -1,1 +1,17 @@
 
+# Attack Case 11: Overwrite ending 'E' with something else
+# Strategy: Create valid file, then overwrite the ending character
+
+myfile = ABopenfile("testfile11.txt", True)
+myfile.writeat("SECRETE", 0)  # Valid: 'S' at start, 'E' at end
+myfile.close()
+
+# Reopen and overwrite the final 'E'
+myfile = ABopenfile("testfile11.txt", False)
+myfile.writeat("X", 6)  # Overwrite last 'E' making it "SECRETX"
+myfile.close()
+
+# Check if this invalid state persists
+myfile = ABopenfile("testfile11.txt", False)
+data = myfile.readat(None, 0)
+myfile.close()
