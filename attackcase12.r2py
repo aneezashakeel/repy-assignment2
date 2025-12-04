@@ -1,17 +1,24 @@
-# Test: create=True on existing should handle properly
+# Attack: Create with True on existing file
+if "testfile12.txt.a" in listfiles():
+  removefile("testfile12.txt.a")
+if "testfile12.txt.b" in listfiles():
+  removefile("testfile12.txt.b")
+
+myfile = ABopenfile("testfile12.txt", True)
+
 try:
-  myfile = ABopenfile("testfile12.txt", True)
   myfile.writeat("SAFE", 0)
   myfile.close()
   
-  myfile = ABopenfile("testfile12.txt", True)  # Re-create
-  myfile.writeat("BAD", 0)  # Invalid
+  # Re-create with invalid data
+  myfile = ABopenfile("testfile12.txt", True)
+  myfile.writeat("BAD", 0)
   myfile.close()
   
   myfile = ABopenfile("testfile12.txt", False)
   data = myfile.readat(None, 0)
-  if data == "BAD":
-    log("BUG: Re-create with invalid data worked!")
+  if "BAD" in data:
+    log("Create True on existing allowed invalid data!")
   myfile.close()
 except:
   pass
