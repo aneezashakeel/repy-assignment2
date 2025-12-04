@@ -1,17 +1,19 @@
-# Test: Append after close should revalidate
+# Attack: Only write 'S' without 'E'
+if "testfile8.txt.a" in listfiles():
+  removefile("testfile8.txt.a")
+if "testfile8.txt.b" in listfiles():
+  removefile("testfile8.txt.b")
+
+myfile = ABopenfile("testfile8.txt", True)
+
 try:
-  myfile = ABopenfile("testfile8.txt", True)
-  myfile.writeat("SE", 0)
-  myfile.close()
-  
-  myfile = ABopenfile("testfile8.txt", False)
-  myfile.writeat("X", 2)  # Makes it "SEX"
+  myfile.writeat("S", 0)  # Only S, no E
   myfile.close()
   
   myfile = ABopenfile("testfile8.txt", False)
   data = myfile.readat(None, 0)
-  if data[-1] != 'E':
-    log("BUG: Invalid append was saved!")
+  if data == "S":
+    log("File with only S was saved!")
   myfile.close()
 except:
   pass
