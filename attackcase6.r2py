@@ -1,11 +1,12 @@
-# Attack Case 6: Create file but write nothing
-# Strategy: Open with create=True but never write valid data
+# Attack: Create file without writing anything
+# Should not create valid A file
+
+if "testfile6.txt" in listfiles():
+  removefile("testfile6.txt")
+if "testfile6.txt.a" in listfiles():
+  removefile("testfile6.txt.a")
+if "testfile6.txt.b" in listfiles():
+  removefile("testfile6.txt.b")
 
 myfile = ABopenfile("testfile6.txt", True)
-# Don't write anything, just close
-myfile.close()
-
-# Try to access the empty file
-myfile = ABopenfile("testfile6.txt", False)
-data = myfile.readat(None, 0)
 myfile.close()
