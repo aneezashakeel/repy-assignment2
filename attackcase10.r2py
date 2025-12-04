@@ -1,17 +1,17 @@
-# Attack: Create valid then overwrite ending 'E'
-# Should make file invalid
-
-if "testfile10.txt" in listfiles():
-  removefile("testfile10.txt")
-if "testfile10.txt.a" in listfiles():
-  removefile("testfile10.txt.a")
-if "testfile10.txt.b" in listfiles():
-  removefile("testfile10.txt.b")
-
-myfile = ABopenfile("testfile10.txt", True)
-myfile.writeat("SAFE", 0)
-myfile.close()
-
-myfile = ABopenfile("testfile10.txt", False)
-myfile.writeat("X", 3)
-myfile.close()
+# Test: Overwriting ending 'E' should invalidate
+try:
+  myfile = ABopenfile("testfile10.txt", True)
+  myfile.writeat("SAFE", 0)
+  myfile.close()
+  
+  myfile = ABopenfile("testfile10.txt", False)
+  myfile.writeat("R", 3)  # Makes it "SAFR"
+  myfile.close()
+  
+  myfile = ABopenfile("testfile10.txt", False)
+  data = myfile.readat(None, 0)
+  if data[-1] != 'E':
+    log("BUG: File without ending E was saved!")
+  myfile.close()
+except:
+  pass
