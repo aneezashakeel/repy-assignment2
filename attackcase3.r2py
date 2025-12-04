@@ -1,11 +1,13 @@
+# Attack: Write data starting with space
+# Violates Requirement 5
 
+if "testfile3.txt" in listfiles():
+  removefile("testfile3.txt")
+if "testfile3.txt.a" in listfiles():
+  removefile("testfile3.txt.a")
+if "testfile3.txt.b" in listfiles():
+  removefile("testfile3.txt.b")
 
 myfile = ABopenfile("testfile3.txt", True)
-myfile.writeat("S", 0)
-myfile.writeat(" DATAE", 1)  
-myfile.close()
-
-
-myfile = ABopenfile("testfile3.txt", False)
-data = myfile.readat(None, 0)
+myfile.writeat(" SAFE", 0)
 myfile.close()
