@@ -1,13 +1,24 @@
-# Test: Empty file should not create valid A file
+# Attack: Write invalid B file, reopen and append
+if "testfile6.txt.a" in listfiles():
+  removefile("testfile6.txt.a")
+if "testfile6.txt.b" in listfiles():
+  removefile("testfile6.txt.b")
+
+myfile = ABopenfile("testfile6.txt", True)
+
 try:
-  myfile = ABopenfile("testfile6.txt", True)
-  # Don't write anything
+  myfile.writeat("SHOW", 0)  # Invalid - no E
+  myfile.close()
+  
+  # Reopen and append
+  myfile = ABopenfile("testfile6.txt", False)
+  myfile.writeat("ME", 4)  # Now "SHOWME"
   myfile.close()
   
   myfile = ABopenfile("testfile6.txt", False)
   data = myfile.readat(None, 0)
-  if len(data) > 0:
-    log("BUG: Empty B created A file!")
+  if "SHOWME" in data:
+    log("Invalid B file was kept and made valid!")
   myfile.close()
 except:
   pass
