@@ -1,1 +1,8 @@
 
+# Attack Case 14: Try to read before any valid write
+# Strategy: Open file, try to read without writing valid data first
+
+myfile = ABopenfile("testfile14.txt", True)
+data = myfile.readat(10, 0)  # Try to read before writing anything
+myfile.writeat("INVALID", 0)  # Then write invalid data
+myfile.close()
