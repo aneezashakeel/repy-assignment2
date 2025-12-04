@@ -1,1 +1,12 @@
+# Attack Case 8: Write with gaps in the file
+# Strategy: Write 'S' at position 0, 'E' at position 10 with gap in between
 
+myfile = ABopenfile("testfile8.txt", True)
+myfile.writeat("S", 0)
+myfile.writeat("E", 10)  # Gap from position 1-9
+myfile.close()
+
+# File has 'S' and 'E' but with uninitialized gap
+myfile = ABopenfile("testfile8.txt", False)
+data = myfile.readat(None, 0)
+myfile.close()
