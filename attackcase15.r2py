@@ -1,1 +1,10 @@
+# Attack Case 15: Write special characters at boundaries
+# Strategy: Test if special chars like newlines, nulls affect validation
 
+myfile = ABopenfile("testfile15.txt", True)
+myfile.writeat("S\x00\n\rE", 0)  # Valid S and E but special chars in between
+myfile.close()
+
+myfile = ABopenfile("testfile15.txt", False)
+data = myfile.readat(None, 0)
+myfile.close()
