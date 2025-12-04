@@ -1,14 +1,19 @@
-# Test: Data starting with space should not be allowed  
+# Attack: Write data starting with space
+if "testfile3.txt.a" in listfiles():
+  removefile("testfile3.txt.a")
+if "testfile3.txt.b" in listfiles():
+  removefile("testfile3.txt.b")
+
+myfile = ABopenfile("testfile3.txt", True)
+
 try:
-  myfile = ABopenfile("testfile3.txt", True)
-  myfile.writeat("S", 0)
-  myfile.writeat(" DATAE", 1)  # Starts with space
+  myfile.writeat(" SAFE", 0)  # Starts with space
   myfile.close()
   
   myfile = ABopenfile("testfile3.txt", False)
   data = myfile.readat(None, 0)
-  if " " in data:
-    log("BUG: Space-prefixed data was allowed!")
+  if data[0] == " ":
+    log("Data starting with space was allowed!")
   myfile.close()
 except:
   pass
