@@ -1,13 +1,13 @@
-# Attack: Write only 'S' without 'E'
-# File should be invalid
-
-if "testfile7.txt" in listfiles():
-  removefile("testfile7.txt")
-if "testfile7.txt.a" in listfiles():
-  removefile("testfile7.txt.a")
-if "testfile7.txt.b" in listfiles():
-  removefile("testfile7.txt.b")
-
-myfile = ABopenfile("testfile7.txt", True)
-myfile.writeat("SDATA", 0)
-myfile.close()
+# Test: File not ending with 'E' should be invalid
+try:
+  myfile = ABopenfile("testfile7.txt", True)
+  myfile.writeat("SDATA", 0)  # No 'E' at end
+  myfile.close()
+  
+  myfile = ABopenfile("testfile7.txt", False)
+  data = myfile.readat(None, 0)
+  if data == "SDATA":
+    log("BUG: File not ending with E was saved!")
+  myfile.close()
+except:
+  pass
