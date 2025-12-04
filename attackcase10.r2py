@@ -1,1 +1,7 @@
+# Attack Case 10: Write at negative offset
+# Strategy: Try to write at invalid offset positions
 
+myfile = ABopenfile("testfile10.txt", True)
+myfile.writeat("SECRETE", 0)  # Valid initial write
+myfile.writeat("X", -1)  # Try negative offset
+myfile.close()
