@@ -1,17 +1,17 @@
-# Attack: Use create=True on existing valid file
-# Should it reset or preserve?
-
-if "testfile12.txt" in listfiles():
-  removefile("testfile12.txt")
-if "testfile12.txt.a" in listfiles():
-  removefile("testfile12.txt.a")
-if "testfile12.txt.b" in listfiles():
-  removefile("testfile12.txt.b")
-
-myfile = ABopenfile("testfile12.txt", True)
-myfile.writeat("SAFE", 0)
-myfile.close()
-
-myfile = ABopenfile("testfile12.txt", True)
-myfile.writeat("BAD", 0)
-myfile.close()
+# Test: create=True on existing should handle properly
+try:
+  myfile = ABopenfile("testfile12.txt", True)
+  myfile.writeat("SAFE", 0)
+  myfile.close()
+  
+  myfile = ABopenfile("testfile12.txt", True)  # Re-create
+  myfile.writeat("BAD", 0)  # Invalid
+  myfile.close()
+  
+  myfile = ABopenfile("testfile12.txt", False)
+  data = myfile.readat(None, 0)
+  if data == "BAD":
+    log("BUG: Re-create with invalid data worked!")
+  myfile.close()
+except:
+  pass
