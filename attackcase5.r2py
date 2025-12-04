@@ -1,17 +1,24 @@
-# Test: Overwriting 'S' should invalidate file
+# Attack: Create valid then overwrite to invalid
+if "testfile5.txt.a" in listfiles():
+  removefile("testfile5.txt.a")
+if "testfile5.txt.b" in listfiles():
+  removefile("testfile5.txt.b")
+
+myfile = ABopenfile("testfile5.txt", True)
+
 try:
-  myfile = ABopenfile("testfile5.txt", True)
   myfile.writeat("SAFE", 0)
   myfile.close()
   
+  # Reopen and corrupt
   myfile = ABopenfile("testfile5.txt", False)
-  myfile.writeat("X", 0)  # Overwrite 'S'
+  myfile.writeat("X", 0)  # Overwrite S
   myfile.close()
   
   myfile = ABopenfile("testfile5.txt", False)
   data = myfile.readat(None, 0)
-  if data[0] != 'S':
-    log("BUG: File with corrupted S was saved!")
+  if data[0] == "X":
+    log("Overwrote S with invalid character!")
   myfile.close()
 except:
   pass
