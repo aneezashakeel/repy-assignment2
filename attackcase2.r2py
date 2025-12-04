@@ -1,13 +1,19 @@
-# Test: File not starting with 'S' should be invalid
+# Attack: Write invalid data (no 'E' at end)
+if "testfile2.txt.a" in listfiles():
+  removefile("testfile2.txt.a")
+if "testfile2.txt.b" in listfiles():
+  removefile("testfile2.txt.b")
+
+myfile = ABopenfile("testfile2.txt", True)
+
 try:
-  myfile = ABopenfile("testfile2.txt", True)
-  myfile.writeat("DATAE", 0)  # Doesn't start with 'S'
+  myfile.writeat("SDATA", 0)  # Doesn't end with 'E'
   myfile.close()
   
   myfile = ABopenfile("testfile2.txt", False)
   data = myfile.readat(None, 0)
-  if data == "DATAE":
-    log("BUG: File not starting with S was saved!")
+  if "SDATA" in data:
+    log("Invalid data without E was saved!")
   myfile.close()
 except:
   pass
