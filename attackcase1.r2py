@@ -1,14 +1,20 @@
-# Test: Invalid B file should not be promoted to A on close
+# Attack: Write invalid data (no 'S' at start)
+if "testfile1.txt.a" in listfiles():
+  removefile("testfile1.txt.a")
+if "testfile1.txt.b" in listfiles():
+  removefile("testfile1.txt.b")
+
+myfile = ABopenfile("testfile1.txt", True)
+
 try:
-  myfile = ABopenfile("testfile1.txt", True)
-  myfile.writeat("SHOW", 0)  # Invalid - no 'E'
+  myfile.writeat("DATAE", 0)  # Doesn't start with 'S'
   myfile.close()
   
-  # If we can read "SHOW" from A file, bug found
+  # Try to read - if readable, monitor failed
   myfile = ABopenfile("testfile1.txt", False)
   data = myfile.readat(None, 0)
-  if data == "SHOW":
-    log("BUG: Invalid B file was promoted to A!")
+  if "DATAE" in data:
+    log("Invalid data without S was saved!")
   myfile.close()
 except:
   pass
