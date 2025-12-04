@@ -1,1 +1,16 @@
 
+# Attack Case 13: Abuse create flag on existing files
+# Strategy: Call ABopenfile with create=True on existing file
+
+myfile = ABopenfile("testfile13.txt", True)
+myfile.writeat("SAFE", 0)  # Valid
+myfile.close()
+
+# Try to "create" again - should this overwrite?
+myfile = ABopenfile("testfile13.txt", True)  # create=True on existing file
+myfile.writeat("DANGER", 0)  # Doesn't end with 'E'
+myfile.close()
+
+myfile = ABopenfile("testfile13.txt", False)
+data = myfile.readat(None, 0)
+myfile.close()
