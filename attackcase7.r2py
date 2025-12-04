@@ -1,13 +1,19 @@
-# Test: File not ending with 'E' should be invalid
+# Attack: Empty file should not save
+if "testfile7.txt.a" in listfiles():
+  removefile("testfile7.txt.a")
+if "testfile7.txt.b" in listfiles():
+  removefile("testfile7.txt.b")
+
+myfile = ABopenfile("testfile7.txt", True)
+
 try:
-  myfile = ABopenfile("testfile7.txt", True)
-  myfile.writeat("SDATA", 0)  # No 'E' at end
+  # Don't write anything
   myfile.close()
   
   myfile = ABopenfile("testfile7.txt", False)
-  data = myfile.readat(None, 0)
-  if data == "SDATA":
-    log("BUG: File not ending with E was saved!")
+  data = myfile.readat(10, 0)
+  if len(data) > 0:
+    log("Empty B file created A file!")
   myfile.close()
 except:
   pass
