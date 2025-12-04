@@ -1,1 +1,14 @@
 
+# Attack Case 12: Write valid then invalid data without closing in between
+# Strategy: Multiple writes in single session that end up invalid
+
+myfile = ABopenfile("testfile12.txt", True)
+myfile.writeat("SE", 0)  # Valid initially
+myfile.writeat("CRET", 1)  # Insert in middle: "SCRETE" - still valid
+myfile.writeat("X", 5)  # Overwrite to make "SCRETX" - invalid
+myfile.close()
+
+# Check if invalid B file affects A file
+myfile = ABopenfile("testfile12.txt", False)
+data = myfile.readat(None, 0)
+myfile.close()
