@@ -1,17 +1,17 @@
-# Attack: Write valid then corrupt middle
-# Still has S and E but corrupted
-
-if "testfile14.txt" in listfiles():
-  removefile("testfile14.txt")
-if "testfile14.txt.a" in listfiles():
-  removefile("testfile14.txt.a")
-if "testfile14.txt.b" in listfiles():
-  removefile("testfile14.txt.b")
-
-myfile = ABopenfile("testfile14.txt", True)
-myfile.writeat("SECURE", 0)
-myfile.close()
-
-myfile = ABopenfile("testfile14.txt", False)
-myfile.writeat("XX", 2)
-myfile.close()
+# Test: Overwrite middle preserving S and E
+try:
+  myfile = ABopenfile("testfile14.txt", True)
+  myfile.writeat("SECURE", 0)
+  myfile.close()
+  
+  myfile = ABopenfile("testfile14.txt", False)
+  myfile.writeat("XX", 2)  # Middle corruption
+  myfile.close()
+  
+  myfile = ABopenfile("testfile14.txt", False)
+  data = myfile.readat(None, 0)
+  if "XX" in data:
+    log("BUG: Middle corruption still has S and E!")
+  myfile.close()
+except:
+  pass
