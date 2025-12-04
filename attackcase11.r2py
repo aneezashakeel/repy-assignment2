@@ -1,14 +1,14 @@
-# Attack: Multiple writes in one session ending invalid
-# B file should be invalid at close
-
-if "testfile11.txt" in listfiles():
-  removefile("testfile11.txt")
-if "testfile11.txt.a" in listfiles():
-  removefile("testfile11.txt.a")
-if "testfile11.txt.b" in listfiles():
-  removefile("testfile11.txt.b")
-
-myfile = ABopenfile("testfile11.txt", True)
-myfile.writeat("SAFE", 0)
-myfile.writeat("R", 4)
-myfile.close()
+# Test: Multiple writes ending invalid should not save
+try:
+  myfile = ABopenfile("testfile11.txt", True)
+  myfile.writeat("SAFE", 0)
+  myfile.writeat("R", 4)  # Makes it invalid
+  myfile.close()
+  
+  myfile = ABopenfile("testfile11.txt", False)
+  data = myfile.readat(None, 0)
+  if "SAFER" in data:
+    log("BUG: Invalid multi-write was saved!")
+  myfile.close()
+except:
+  pass
